@@ -27,7 +27,7 @@ class RMSProp(object):
         param.value += -self.eta * param.grad / (np.sqrt(param.grad_hist) + self.delta)
 
 
-class adam(object):
+class Adam(object):
     """TO BE IMPLEMENTED"""
 
     def __init__(self, learning_rate):
