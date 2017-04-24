@@ -32,7 +32,7 @@ class FullyConnected(layer):
         self.weights.grad = np.dot(input_.T, output_gradient)
         self.bias.grad = output_gradient.sum(axis=0)
         if self.l2:
-            self.weights.grad += (self.weights.value * self.l2) / self.size
+            self.weights.grad += (self.weights.value * self.l2)
             # self.bias.grad += self.bias.value * self.l2
         input_grad = np.dot(output_gradient, self.weights.value.T)
 

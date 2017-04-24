@@ -12,6 +12,7 @@ class softmax(layer):
     def forward(self, scores):
         '''
         '''
+
         z = np.exp(scores).sum(axis=1, keepdims=True)
         probs = np.exp(scores) / z  # - np.log(np.sum(np.exp(input_), axis=1))
 
