@@ -23,13 +23,11 @@ class RMSProp(object):
         """Update parameter values
         :type param: gjnn.parameter
         """
-
-        param.grad_hist = self.rho * param.grad_hist + (1 - self.rho) * np.square(param.grad)
-        param.grad = param.grad / (np.sqrt(param.grad_hist) + self.delta)
-        param.value += self.eta * param.grad
+        param.grad_hist = self.rho * param.grad_hist + (1 - self.rho) * (param.grad ** 2)
+        param.value += -self.eta * param.grad / (np.sqrt(param.grad_hist) + self.delta)
 
 
-class adam(object):
+class Adam(object):
     """TO BE IMPLEMENTED"""
 
     def __init__(self, learning_rate):
