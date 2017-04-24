@@ -29,7 +29,7 @@ class parameter(object):
 
         self.value = initializer(shape)
         self.grad = None
-        self.grad_hist = None
+        self.grad_hist = 0.0
         self.name = name
 
     def update(self, optimizer):
