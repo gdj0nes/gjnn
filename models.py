@@ -69,7 +69,7 @@ class Model(object):
                 batch = X_train[start:start + batch_size]
                 batch_labels = Y_train[start:start + batch_size]
                 # Forward and backward
-                self.forward(batch)
+                self.forward(batch, train=True)
                 self.backward(batch_labels)
                 # Collect loss and accuracy
                 if start % batch_size * 100 == 0:
@@ -127,15 +127,17 @@ class Model(object):
         self.inputs = None  # clear model of values
         return self.history
 
-    def forward(self, batch):
+    def forward(self, batch, train=False):
         """Preform a forward pass over the layers in the model
 
         Parameters:
-            batch: A numpy array containing the data
+            :param batch: the data for batch 
+            :param train: optional indicator for dropout layers
 
         """
         self.inputs = [batch]
         for layer in self.layers:
+            layer.train = train
             prev_output = self.inputs[-1]
             layer_output = layer.forward(prev_output)
             self.inputs.append(layer_output)

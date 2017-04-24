@@ -23,11 +23,8 @@ class RMSProp(object):
         """Update parameter values
         :type param: gjnn.parameter
         """
-        if param.grad_hist is None:
-            param.grad_hist = 0.0
         param.grad_hist = self.rho * param.grad_hist + (1 - self.rho) * (param.grad ** 2)
         param.value += -self.eta * param.grad / (np.sqrt(param.grad_hist) + self.delta)
-        # param.value += -self.eta * param.grad
 
 
 class adam(object):

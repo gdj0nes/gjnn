@@ -4,24 +4,30 @@ class layer:
     """
 
     def __init__(self):
-        return
+        self.train = None
 
-    def forward(self, _input):
+    def forward(self, input_):
         """
         
-        :param _input: 
+        :type input_: object
         :return: 
         """
         pass
 
-    def backward(self, _input, _gradOutput):
+    def backward(self, input_, output_gradient):
         """
         
-        :param _input: 
-        :param _gradOutput: 
+        :param input_: 
+        :param output_gradient: 
         :return: 
         """
         pass
 
     def update(self, optimizer):
         pass
+
+    def set_train(self):
+        self.train = True
+
+    def set_eval(self):
+        self.train = False
