@@ -3,6 +3,7 @@ import numpy as np
 from gjnn.weights import parameter
 from gjnn.base import layer
 
+
 class FullyConnected(layer):
     """Full Connected Layer"""
 
@@ -32,8 +33,7 @@ class FullyConnected(layer):
         self.weights.grad = np.dot(input_.T, output_gradient)
         self.bias.grad = output_gradient.sum(axis=0)
         if self.l2:
-            self.weights.grad += (self.weights.value * self.l2) / self.size
-            # self.bias.grad += self.bias.value * self.l2
+            self.weights.grad += (self.weights.value * self.l2)
         input_grad = np.dot(output_gradient, self.weights.value.T)
 
         return input_grad
@@ -41,6 +41,28 @@ class FullyConnected(layer):
     def update(self, optimizer):
         for param in self.params:
             param.update(optimizer)
+
+
+class DropOut(layer):
+    """https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf"""
+
+    def __init__(self, portion):
+        layer.__init__(self)
+        self.p = portion
+        self.mask = None
+
+    def forward(self, input_):
+
+        if self.train:
+            self.mask = np.random.binomial(1, self.p, input_.shape)
+        else:
+            self.mask = self.p
+
+        return (input_ * self.mask) / (1 - self.p)
+
+    def backward(self, input_, output_gradient):
+
+        return (self.mask * output_gradient) / (1 - self.p)
 
 
 class conv2D(layer):
