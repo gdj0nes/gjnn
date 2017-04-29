@@ -29,8 +29,12 @@ class parameter(object):
 
         self.value = initializer(shape)
         self.grad = None
-        self.grad_hist = 0.0
         self.name = name
+        # RMSProp parameter
+        self.grad_hist = 0.0
+        # ADAM parameters
+        self.m = 0.0
+        self.v = 0.0
 
     def update(self, optimizer):
         """Update the value of the parameter using the model

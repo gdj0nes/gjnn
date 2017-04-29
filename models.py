@@ -24,6 +24,7 @@ class Model(object):
                         'train_acc': [],
                         'val_acc': [],
                         'time': []}
+        self.inputs = None
 
     def add(self, layer):
         """Used to add layers to the model
@@ -62,12 +63,14 @@ class Model(object):
             # Train Stage
             train_loss = 0.
             train_acc = 0.
-            evals = 0
+            evals = 0.
+            permute = np.random.permutation(num_obs)
             for batch_num in xrange(num_obs / batch_size):
                 # Construct batch
                 start = batch_size * batch_num
-                batch = X_train[start:start + batch_size]
-                batch_labels = Y_train[start:start + batch_size]
+                idxs = permute[start:start + batch_size]
+                batch = X_train[idxs]
+                batch_labels = Y_train[idxs]
                 # Forward and backward
                 self.forward(batch, train=True)
                 self.backward(batch_labels)
@@ -83,7 +86,7 @@ class Model(object):
                                                                                       batch_results[1]), end='\r')
 
             # Report and save epoch train results
-            batch_num += 1  # Adjust for taking averagge
+            batch_num += 1  # Adjust for taking average
             train_loss /= evals
             train_acc /= evals
             # Epoch training time
@@ -172,7 +175,7 @@ class Model(object):
         """Evaluate validation loss and accuracy for most recent batch. Computes predictions
         """
 
-        output = self.forward(data)
+        output = self.forward(data, train=False)
         loss = self.layers[-1].evaluate(output, labels)
         preds = output.argmax(axis=1)
         acc = (labels == preds).sum() / float(len(labels))

@@ -2,7 +2,7 @@ import numpy as np
 from gjnn.base import layer
 
 
-class softmax(layer):
+class Softmax(layer):
     '''Preform softmax on input
     '''
 
@@ -35,7 +35,7 @@ class softmax(layer):
 
         return loss
 
-class tanh(layer):
+class Tanh(layer):
     def __init__(self):
         layer.__init__(self)
 
@@ -48,7 +48,7 @@ class tanh(layer):
         return input_grad
 
 
-class reLU(layer):
+class ReLU(layer):
     def __init__(self):
         layer.__init__(self)
 

@@ -3,7 +3,6 @@ import numpy as np
 from gjnn.weights import parameter
 from gjnn.base import layer
 
-
 class FullyConnected(layer):
     """Full Connected Layer"""
 
@@ -43,6 +42,37 @@ class FullyConnected(layer):
         for param in self.params:
             param.update(optimizer)
 
+
+class BatchNormalization(layer):
+
+    def __init__(self, momentum=0.95, eps=0.001):
+        layer.__init__(self)
+        self.mom = momentum
+        self.eps = eps
+        self.mu = 0.0
+        self.sigma = 0.0
+        self.batch_sigma = 0.0
+        self.batch_mu = 0.0
+
+    def forward(self, input_):
+
+        if self.train:
+
+            self.batch_mu = input_.mean(axis=0)
+            self.batch_sigma = np.sqrt(np.square(input_ - batch_mu).mean(axis=0) + self.eps)
+
+            output = (input_ - batch_mu) / batch_sigma
+            self.mu = self.mom * self.mu + (1 - self.mom) * batch_mu
+            self.sigma = self.mom * self.mu + (1 - self.mom) * batch_sigma
+
+        else:
+
+            output = (input_ - self.mu) / self.sigma
+
+        return output
+
+    def backward(self, input_, output_gradient):
+        pass
 
 class DropOut(layer):
     """https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf"""
